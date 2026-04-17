@@ -3,6 +3,8 @@ from services.pca_service import run_pca
 from services.volcano_service import run_volcano
 from services.heatmap_service import run_heatmap
 from services.clustering_service import run_clustering
+from pydantic import BaseModel
+from services.confusion import run_confusion
 
 router = APIRouter(prefix="/analyze")
 
@@ -22,5 +24,8 @@ def heatmap_api(data: dict):
 def clustering_api(data: dict):
     file_url = data["file_url"]
     n_clusters = data.get("n_clusters", 3)
-
     return run_clustering(file_url, n_clusters)
+
+@router.post("/confusion")
+def confusion(data: dict):
+    return run_confusion(data["file_url"])
